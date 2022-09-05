@@ -32,7 +32,7 @@ const upload = multer({
 router.post(
   "/register",
   upload.single("imgUrl"),
-  check("name").isEmpty(),
+  check("name").matches(/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/),
   check("email").isEmail(),
   check("password").matches(/^(?=.*[A-Z]).{8,}$/),
   check("confirmPassword").matches(/^(?=.*[A-Z]).{8,}$/),
