@@ -17,7 +17,7 @@ router.post("/list", auth, async (req, res) => {
       await accessModel.create({
         listID: listed[i]._id,
         name: req.name,
-        userID: req.id,
+        access: req.id,
       });
     }
     res.status(200).json("done");
