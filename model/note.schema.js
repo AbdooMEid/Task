@@ -7,14 +7,21 @@ const noteSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    listID : {
+    listID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "List",
     },
-    doneTask:{type : mongoose.Schema.Types.Boolean , default : false , required : [true , 'check the note']},
+    doneTask: {
+      type: mongoose.Schema.Types.Boolean,
+      default: false,
+      required: [true, "check the note"],
+    },
     titleNote: { type: String, required: [true, "please add some text"] },
-    descNote : {type: String},
+    descNote: { type: String },
+    expDate: String,
+    noteImg: [String],
+    noteFile: [String],
     createdAt: { type: Date, default: Date.now() },
   },
   { timestamps: true }

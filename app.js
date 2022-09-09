@@ -34,17 +34,14 @@ app.use("*", (req, res) => {
   res.status(404).json("404 api Not Found");
 });
 // Handling 500
-app.use(function (error, req, res, next) {
-  res.status(500).render("500");
+app.use("/500", function (error, req, res, next) {
+  next(new Error(error));
 });
 
 //send the user to 500 page without shutting down the server
 app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.render("error", {
-    message: err.message,
-    error: {},
-  });
+  res.status(err.status || 500).send({ error: err.message });
+  next(err);
 });
 app.listen(process.env.PORT || port, () =>
   logger.error(`Example app listening on port ${port}!`.underline.red.bold)

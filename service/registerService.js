@@ -48,9 +48,6 @@ const register = async (req, res) => {
           .status(201)
           .json({ message: "confirm Password do not match password" });
       }
-      if (req.file === undefined) {
-        return res.status(201).json("reject file because accept jpeg or png  ");
-      }
       user = new userModel({
         name,
         email,
