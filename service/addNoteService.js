@@ -1,19 +1,5 @@
 const noteModel = require("../model/note.schema");
-const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/img");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + Math.random() * 1000 + "-" + file.originalname);
-  },
-});
-const upload = multer({
-  dest: "public/img",
-  storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
-});
 const createNote = async (req, res) => {
   try {
     const { titleNote, descNote, doneTask, listID, expDate } = req.body;
@@ -47,6 +33,8 @@ const createNote = async (req, res) => {
         type[k] == "image/webp"
       ) {
         finalPath.push(imagesPath[k]);
+      } else {
+        throw new Error("failed Upload");
       }
     }
     await noteModel.insertMany({
@@ -60,10 +48,9 @@ const createNote = async (req, res) => {
       noteFile: filesPath,
     });
     res.status(200).json("done");
-
   } catch (error) {
     res.status(201).json(error.message);
   }
 };
 
-module.exports = { createNote, upload };
+module.exports = createNote;

@@ -1,31 +1,31 @@
 const userModel = require("../model/user.schema");
 const bcrypt = require("bcryptjs");
-const multer = require("multer");
+// const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/img");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + Math.random() * 1000 + "-" + file.originalname);
-  },
-});
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/webp"
-  )
-    cb(null, true);
-  else cb(null, false);
-};
-const upload = multer({
-  dest: "public/img",
-  storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
-  fileFilter: fileFilter,
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public/img");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + "-" + Math.random() * 1000 + "-" + file.originalname);
+//   },
+// });
+// const fileFilter = (req, file, cb) => {
+//   if (
+//     file.mimetype === "image/png" ||
+//     file.mimetype === "image/jpeg" ||
+//     file.mimetype === "image/jpg" ||
+//     file.mimetype === "image/webp"
+//   )
+//     cb(null, true);
+//   else cb(null, false);
+// };
+// const upload = multer({
+//   dest: "public/img",
+//   storage,
+//   limits: { fileSize: 1024 * 1024 * 5 },
+//   fileFilter: fileFilter,
+// });
 const updatePassword = async (req, res) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
   try {
@@ -79,11 +79,31 @@ const updateName = async (req, res) => {
 
 const updateImage = async (req, res) => {
   try {
-    if (req.file === undefined) {
-      return res.status(201).json("reject file because accept jpeg or png  ");
+    let images = req.files.imgUrl;
+    let imagePath = [];
+    let type = [];
+    let finalPath = [];
+    if (images !== undefined) {
+      for (let i = 0; images.length > i; i++) {
+        imagePath.push(images[i].path);
+        type.push(images[i].mimetype);
+      }
+    }
+
+    for (let k = 0; type.length > k; k++) {
+      if (
+        type[k] == "image/png" ||
+        type[k] == "image/jpeg" ||
+        type[k] == "image/jpg" ||
+        type[k] == "image/webp"
+      ) {
+        finalPath.push(imagePath[k]);
+      } else {
+        throw new Error("failed Upload");
+      }
     }
     await userModel
-      .findByIdAndUpdate(req.id, { imgUrl: req.file.path })
+      .findByIdAndUpdate(req.id, { imgUrl: finalPath[0] })
       .then((doc) => {
         res.status(200).json("updated Image");
       })
@@ -92,4 +112,4 @@ const updateImage = async (req, res) => {
     res.status(201).json(error.message);
   }
 };
-module.exports = { updatePassword, updateName, upload, updateImage };
+module.exports = { updatePassword, updateName, updateImage };

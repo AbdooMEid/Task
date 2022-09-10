@@ -25,6 +25,6 @@ router.use("/", require("./getAccess.routes"));
 router.use("/", require("./getListAccess.routes"));
 router.use("/", require("./getProfile.routes"));
 router.use("/", require("./updateProfile.routes"));
-
+router.use("/", require("./contactUs.routes"));
 
 module.exports = router;

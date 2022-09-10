@@ -1,32 +1,7 @@
 const bcrypt = require("bcryptjs");
 const userModel = require("../model/user.schema");
 const _ = require("lodash");
-const multer = require("multer");
-const { validationResult} = require("express-validator")
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/img");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + Math.random() * 1000 + "-" + file.originalname);
-  },
-});
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/webp"
-  )
-    cb(null, true);
-  else cb(null, false);
-};
-const upload = multer({
-  dest: "public/img",
-  storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
-  fileFilter: fileFilter,
-});
+const { validationResult } = require("express-validator");
 
 const register = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -48,12 +23,35 @@ const register = async (req, res) => {
           .status(201)
           .json({ message: "confirm Password do not match password" });
       }
+      let images = req.files.imgUrl;
+      let imagePath = [];
+      let type = [];
+      let finalPath = [];
+      if (images !== undefined) {
+        for (let i = 0; images.length > i; i++) {
+          imagePath.push(images[i].path);
+          type.push(images[i].mimetype);
+        }
+      }
+
+      for (let k = 0; type.length > k; k++) {
+        if (
+          type[k] == "image/png" ||
+          type[k] == "image/jpeg" ||
+          type[k] == "image/jpg" ||
+          type[k] == "image/webp"
+        ) {
+          finalPath.push(imagePath[k]);
+        } else {
+          throw new Error("failed Upload");
+        }
+      }
       user = new userModel({
         name,
         email,
         password,
         confirmPassword,
-        imgUrl: req.file.path,
+        imgUrl: finalPath[0],
       });
       const saltRound = 10;
       const salt = await bcrypt.genSalt(saltRound);
@@ -68,4 +66,4 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register, upload };
+module.exports = register;

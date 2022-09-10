@@ -4,7 +4,6 @@ var bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
 const color = require("colors");
-const logger = require("./log/logger");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -44,5 +43,5 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 app.listen(process.env.PORT || port, () =>
-  logger.error(`Example app listening on port ${port}!`.underline.red.bold)
+  console.log(`Example app listening on port ${port}!`.underline.red.bold)
 );

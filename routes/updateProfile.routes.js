@@ -4,8 +4,9 @@ const {
   updatePassword,
   updateName,
   updateImage,
-  upload,
 } = require("../service/updateProfileService");
+const uploadFiles = require("../config/uploadImage");
+
 /*
 method => put 
 /editPassword
@@ -20,6 +21,6 @@ response => updateImage
 */
 router.route("/editPassword").put(auth, updatePassword);
 router.route("/editName").put(auth, updateName);
-router.route("/editImage").put(auth, upload.single("imgUrl"), updateImage);
+router.route("/editImage").put(auth, uploadFiles, updateImage);
 
 module.exports = router;
