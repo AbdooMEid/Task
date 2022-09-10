@@ -47,6 +47,8 @@ const editNote = async (req, res) => {
         type[k] == "image/webp"
       ) {
         finalPath.push(imagesPath[k]);
+      } else {
+        throw new Error("failed Upload");
       }
     }
     await noteModel.findByIdAndUpdate(

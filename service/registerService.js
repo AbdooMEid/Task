@@ -43,7 +43,7 @@ const register = async (req, res) => {
         ) {
           finalPath.push(imagePath[k]);
         } else {
-          throw new Error("failed Upload");
+          throw new Error("failed Upload")
         }
       }
       user = new userModel({
