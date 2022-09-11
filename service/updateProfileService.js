@@ -69,7 +69,6 @@ const updateImage = async (req, res) => {
       }
     }
     for (let j = 0; size.length > j; j++) {
-      console.log(size[j]);
       if (size[j] <= 1024 * 1024 * 5) {
         finalPath.push(imagePath[j]);
       } else {
