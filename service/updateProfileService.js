@@ -72,7 +72,7 @@ const updateImage = async (req, res) => {
       if (size[j] <= 1024 * 1024 * 5) {
         finalPath.push(imagePath[j]);
       } else {
-        throw new Error("file too large");
+        return res.status(201).json("file too large");
       }
     }
     for (let k = 0; type.length > k; k++) {
@@ -84,7 +84,7 @@ const updateImage = async (req, res) => {
       ) {
         finalPath.push(imagePath[k]);
       } else {
-        throw new Error("failed Upload");
+        return res.status(201).json("failed Upload type png/jpeg/jpg");
       }
     }
     await userModel
