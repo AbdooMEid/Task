@@ -60,19 +60,28 @@ const updateImage = async (req, res) => {
     let imagePath = [];
     let type = [];
     let finalPath = [];
+    let size = [];
     if (images !== undefined) {
       for (let i = 0; images.length > i; i++) {
         imagePath.push(images[i].path);
         type.push(images[i].mimetype);
+        size.push(images[i].size);
       }
     }
-
+    for (let j = 0; size.length > j; j++) {
+      console.log(size[j]);
+      if (size[j] <= 1024 * 1024 * 5) {
+        finalPath.push(imagePath[j]);
+      } else {
+        throw new Error("file too large");
+      }
+    }
     for (let k = 0; type.length > k; k++) {
       if (
-        type[k] == "image/png" ||
-        type[k] == "image/jpeg" ||
-        type[k] == "image/jpg" ||
-        type[k] == "image/webp"
+        type[k] === "image/png" ||
+        type[k] === "image/jpeg" ||
+        type[k] === "image/jpg" ||
+        type[k] === "image/webp"
       ) {
         finalPath.push(imagePath[k]);
       } else {

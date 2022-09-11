@@ -13,16 +13,35 @@ const createNote = async (req, res) => {
     let filesPath = [];
     let type = [];
     let finalPath = [];
+    let sizeImg = [];
+    let sizeFile = [];
+    let finalFile = [];
 
     if (images !== undefined) {
       for (let i = 0; images.length > i; i++) {
         imagesPath.push(images[i].path);
         type.push(images[i].mimetype);
+        sizeImg.push(images[i].size);
       }
     }
     if (files !== undefined) {
       for (let j = 0; files.length > j; j++) {
         filesPath.push(files[j].path);
+        sizeFile.push(files[j].size);
+      }
+    }
+    for (let n = 0; sizeImg.length > n; n++) {
+      if (sizeImg[n] <= 1024 * 1024 * 5) {
+        finalPath.push(imagesPath[n]);
+      } else {
+        throw new Error("file too large Image");
+      }
+    }
+    for (let b = 0; sizeFile.length > b; b++) {
+      if (sizeFile[b] <= 1024 * 1024 * 5) {
+        finalFile.push(filesPath[b]);
+      } else {
+        throw new Error("file too large file");
       }
     }
     for (let k = 0; type.length > k; k++) {
@@ -45,7 +64,7 @@ const createNote = async (req, res) => {
       userID: req.id,
       listID,
       noteImg: finalPath,
-      noteFile: filesPath,
+      noteFile: finalFile,
     });
     res.status(200).json("done");
   } catch (error) {
