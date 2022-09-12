@@ -10,7 +10,7 @@ const accessSchema = mongoose.Schema(
     access: {
       type: mongoose.Schema.Types.ObjectId,
     },
-    name: { type: String, required: true },
+    name: { type: String},
   },
   { timestamps: true }
 );
