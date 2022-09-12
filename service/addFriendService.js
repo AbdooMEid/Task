@@ -4,14 +4,14 @@ const addFriend = async (req, res) => {
   try {
     // add user1 data to user2 friendRequests
     // add user2 data to user1 sentRequests
-    const { _id, name } = req.body;
+    const { _id } = req.body;
     await userModel.updateOne(
       { _id: _id },
-      { $push: { friendRequests: { name: req.name, _id: req.id } } }
+      { $push: { friendRequests: { _id: req.id } } }
     );
     await userModel.updateOne(
       { _id: req.id },
-      { $push: { sentRequests: { name: name, _id: _id } } }
+      { $push: { sentRequests: { _id: _id } } }
     );
     res.status(200).json("Friend Requests");
   } catch (error) {

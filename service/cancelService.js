@@ -4,14 +4,14 @@ const cancelFriend = async (req, res) => {
   try {
     // remove me from friendRequests
     // add friend from sentRequests
-    const { _id, name } = req.body;
+    const { _id } = req.body;
     await userModel.updateOne(
       { _id: _id },
-      { $pull: { friendRequests: { name: req.name, _id: req.id } } }
+      { $pull: { friendRequests: { _id: req.id } } }
     );
     await userModel.updateOne(
       { _id: req.id },
-      { $pull: { sentRequests: { name: name, _id: _id } } }
+      { $pull: { sentRequests: { _id: _id } } }
     );
     res.status(200).json("cancel Requests ");
   } catch (error) {
