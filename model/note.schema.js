@@ -13,8 +13,8 @@ const noteSchema = mongoose.Schema(
       ref: "List",
     },
     doneTask: {
-      type: mongoose.Schema.Types.Boolean,
-      default: false,
+      type: ["open" , "inProgress" , "complete"],
+      default: "open",
       required: [true, "check the note"],
     },
     titleNote: { type: String, required: [true, "please add some text"] },
