@@ -2,7 +2,7 @@ const noteModel = require("../model/note.schema");
 
 const createNote = async (req, res) => {
   try {
-    const { titleNote, descNote, done, listID, expDate } = req.body;
+    const { titleNote, descNote, doneTask, listID, expDate } = req.body;
     if (!titleNote || !listID) {
       return res.status(201).json("title can not be empty");
     }
@@ -57,7 +57,7 @@ const createNote = async (req, res) => {
     await noteModel.insertMany({
       titleNote,
       descNote,
-      doneTask: done,
+      doneTask,
       expDate,
       userID: req.id,
       listID,
@@ -71,3 +71,4 @@ const createNote = async (req, res) => {
 };
 
 module.exports = createNote;
+

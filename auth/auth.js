@@ -8,9 +8,10 @@ module.exports = (req, res, next) => {
       req.id = decoded.id;
       req.email = decoded.email;
       req.name = decoded.name;
-      next()
+      req.role = decoded.role;
+      next();
     });
-  }else{
-      res.status(201).json("your not authenticated")
+  } else {
+    res.status(201).json("your not authenticated");
   }
 };

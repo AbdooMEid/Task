@@ -2,7 +2,7 @@ const noteModel = require("../model/note.schema");
 
 const editNote = async (req, res) => {
   try {
-    const { titleNote, descNote, expDate, done } = req.body;
+    const { titleNote, descNote, expDate, doneTask } = req.body;
     const editNote = await noteModel.findOne({ _id: req.body._id });
     if (!editNote) {
       return res.status(201).json("Not Found");
@@ -62,7 +62,7 @@ const editNote = async (req, res) => {
         titleNote,
         descNote,
         expDate,
-        doneTask: done,
+        doneTask,
         // noteImg: finalPath,
         // noteFile: finalFile,
       }

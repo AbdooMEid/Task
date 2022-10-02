@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     imgUrl: String,
+    role: { type: Boolean, default: false },
     friends: {
       type: [{ name: String, id: mongoose.Schema.Types.ObjectId }],
       default: [],
